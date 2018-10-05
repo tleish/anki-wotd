@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.expand_path(File.join(File.dirname(__FILE__), *%w[.. lib]))
+
+require "anki/wotd"
+require "anki/connect"
+require 'yaml'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: anki-word [options]"
+  opts.on('-w', '--words "word1 word2"', 'Words List (space seperated)') { |v| options[:words] = v.gsub('=', '').strip.split(' ').compact }
+  opts.on('-p', '--print', 'Print Output Only') { |v| options[:print] = true }
+end.parse!
+
+ANKI_CONFIG = YAML.load_file(File.expand_path('~/.anki-wotd.yml'))
+
+Anki::Connect.configure do |config|
+  config.deck_name = 'Default'
+  config.model_name = 'Cloze'
+  config.oxford_dictionary_client = OxfordDictionary.new(app_id: ANKI_CONFIG['OXFORD_DICTIONARY_APP_ID'], app_key: ANKI_CONFIG['OXFORD_DICTIONARY_APP_KEY'])
+end
+
+ankify = Anki::Wotd::Ankify.new(words: options[:words])
+
+if options[:print]
+  ankify.cards(false).each do |card|
+    puts "#" * 10
+    print card[:fields][:Text]
+    puts "\n" * 2
+    print card[:fields][:Note]
+    puts
+    puts "#" * 10
+  end
+else
+  ankify.add
+end
