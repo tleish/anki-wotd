@@ -16,6 +16,7 @@ module Anki
       end
 
       def get
+        puts "Getting definitions #{Rss.url}..."
         @rss ||= SimpleRSS.parse open(configuration.rss_url)
         XmlSimple.xml_in(@rss.source)
       end

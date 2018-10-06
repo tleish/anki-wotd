@@ -1,9 +1,12 @@
 require 'anki/wotd/version'
 require 'anki/wotd/configuration'
 require 'anki/wotd/ankify'
+require 'anki/wotd/card'
+require 'anki/wotd/words'
 require 'anki/wotd/dictionary_parts'
 require 'anki/wotd/dictionary_decorator'
 require 'anki/wotd/rss'
+
 
 module Anki
   module Wotd

@@ -4,6 +4,7 @@ $:.unshift File.expand_path(File.join(File.dirname(__FILE__), *%w[.. lib]))
 
 require "anki/wotd"
 require "anki/connect"
+require "oxford_dictionary"
 require 'yaml'
 require 'optparse'
 
@@ -22,14 +23,15 @@ Anki::Connect.configure do |config|
   config.oxford_dictionary_client = OxfordDictionary.new(app_id: ANKI_CONFIG['OXFORD_DICTIONARY_APP_ID'], app_key: ANKI_CONFIG['OXFORD_DICTIONARY_APP_KEY'])
 end
 
-ankify = Anki::Wotd::Ankify.new(words: options[:words])
+definitions = Anki::Wotd::Words.new(words: options[:words]).definitions
+ankify = Anki::Wotd::Ankify.new(definitions: definitions)
 
 if options[:print]
-  ankify.cards(false).each do |card|
+  ankify.cards.each do |card|
     puts "#" * 10
-    print card[:fields][:Text]
+    print card.to_json[:fields][:Text]
     puts "\n" * 2
-    print card[:fields][:Note]
+    print card.to_json[:fields][:Note]
     puts
     puts "#" * 10
   end

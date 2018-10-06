@@ -3,7 +3,7 @@ require 'anki/oxford_dictionary/dictionary_decorator'
 
 describe Anki::OxfordDictionary::DictionaryDecorator do
   let(:client) { OxfordDictionary.new(app_id: '123', app_key: '456') }
-  let(:html) {
+  let(:card) {
 %(<h4>{{c1::insult}}</h4>
 <p><i>Verb</i> {{c1::<a href="http://audio.oxforddictionaries.com/en/mp3/insult_gb_1.mp3">/ɪnˈsʌlt</a>/}}
   <ol>
@@ -22,7 +22,14 @@ describe Anki::OxfordDictionary::DictionaryDecorator do
 </p>)
 }
 
-  let(:card) { "Origin: mid 16th century (as a verb in the sense ‘exult, act arrogantly’): from Latin insultare ‘jump or trample on’, from in- ‘on’ + saltare, from salire ‘to leap’. The noun (in the early 17th century denoting an attack) is from French insulte or ecclesiastical Latin insultus. The main current senses date from the 17th century, the medical use dating from the early 20th century" }
+  let(:note) { "Origin: mid 16th century (as a verb in the sense ‘exult, act arrogantly’): from Latin insultare ‘jump or trample on’, from in- ‘on’ + saltare, from salire ‘to leap’. The noun (in the early 17th century denoting an attack) is from French insulte or ecclesiastical Latin insultus. The main current senses date from the 17th century, the medical use dating from the early 20th century" }
+
+  let(:json) {{
+      fields: {
+          Text: card,
+          Note: note,
+      }
+  }}
   it 'has a card' do
     entry = nil
     VCR.use_cassette('oxford_dictionary_insult') do
@@ -30,7 +37,7 @@ describe Anki::OxfordDictionary::DictionaryDecorator do
     end
 
     entry_decorator = Anki::OxfordDictionary::DictionaryDecorator.new(entry)
-    entry_decorator.card.must_equal html
+    entry_decorator.card.must_equal card
   end
 
   it 'has a note' do
@@ -40,7 +47,17 @@ describe Anki::OxfordDictionary::DictionaryDecorator do
     end
 
     entry_decorator = Anki::OxfordDictionary::DictionaryDecorator.new(entry)
-    entry_decorator.note.must_equal card
+    entry_decorator.note.must_equal note
+  end
+
+  it 'builds json' do
+    entry = nil
+    VCR.use_cassette('oxford_dictionary_insult') do
+      entry = client.entry('insult')
+    end
+
+    entry_decorator = Anki::OxfordDictionary::DictionaryDecorator.new(entry)
+    entry_decorator.to_json.must_equal json
   end
 
 end
