@@ -1,28 +1,29 @@
 # Anki::Wotd
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/anki/wotd`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Get the Word of the Day (wotd) from http://www.wordthink.com/ and the definition from https://www.oxforddictionaries.com/ and create an anki card using https://github.com/FooSoft/anki-connect.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Download the repo and run the following commands:
 
 ```ruby
-gem 'anki-wotd'
+gem build anki-wotd.gemspec
+gem install anki-wotd-[version].gem
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install anki-wotd
 
 ## Usage
 
-TODO: Write usage instructions here
+To lookup all the words from  http://www.wordthink.com/ and create cards, run:
+
+```
+$ anki-wotd
+```
+
+To add your own list of word(s), use the following space deliniated words:
+
+```
+$ anki-wotd --words="gregarious existential"
+```
 
 ## Development
 

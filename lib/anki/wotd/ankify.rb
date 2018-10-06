@@ -1,5 +1,5 @@
 require 'anki/connect'
-require 'anki/wotd'
+require 'anki/wotd/card'
 
 module Anki
   module Wotd

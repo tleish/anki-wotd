@@ -1,11 +1,12 @@
 require 'anki/connect'
-require 'anki/wotd'
+require 'anki/wotd/dictionary_parts'
+require 'anki/wotd/dictionary_decorator'
 require 'anki/oxford_dictionary'
 
 module Anki
   module Wotd
     class Words
-      attr_reader :words, :configuration
+      attr_reader :configuration
       def initialize(words: [], configuration: Anki::Connect.configuration)
         @configuration = configuration
         @words = words unless Array(words).empty?
