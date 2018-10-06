@@ -1,13 +1,13 @@
 require 'anki/connect'
-require 'anki/wotd/card'
+require 'anki/wotd/cards'
 
 module Anki
   module Wotd
     class Ankify
-      attr_reader :definitions, :configuration
-      def initialize(definitions: , configuration: Anki::Connect.configuration)
+      attr_reader :cards, :configuration
+      def initialize(cards: , configuration: Anki::Connect.configuration)
         @configuration = configuration
-        @definitions = Array(definitions)
+        @cards = Array(cards)
       end
 
       def add
@@ -18,12 +18,6 @@ module Anki
             Anki::Connect::CardCreator.add(card: card.to_json, configuration: configuration)
             "#{card.word} (created)"
           end
-        end
-      end
-
-      def cards
-        definitions.map do |definition|
-          Card.new(definition: definition)
         end
       end
     end

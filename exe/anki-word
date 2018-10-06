@@ -23,18 +23,13 @@ Anki::Connect.configure do |config|
   config.oxford_dictionary_client = OxfordDictionary.new(app_id: ANKI_CONFIG['OXFORD_DICTIONARY_APP_ID'], app_key: ANKI_CONFIG['OXFORD_DICTIONARY_APP_KEY'])
 end
 
-definitions = Anki::Wotd::Words.new(words: options[:words]).definitions
-ankify = Anki::Wotd::Ankify.new(definitions: definitions)
+definitions = Anki::Wotd::Words.new(words: options[:words])
+cards = Anki::Wotd::Cards.new(definitions: definitions)
 
-if options[:print]
-  ankify.cards.each do |card|
-    puts "#" * 10
-    print card.to_json[:fields][:Text]
-    puts "\n" * 2
-    print card.to_json[:fields][:Note]
-    puts
-    puts "#" * 10
-  end
+if !options[:print]
+  Anki::Wotd::Ankify.new(cards: cards).add
 else
-  ankify.add
+  cards.each do |card|
+    puts card.to_text
+  end
 end
