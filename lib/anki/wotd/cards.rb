@@ -40,14 +40,15 @@ module Anki
       end
 
       def ankified?
-        !Anki::Connect::CardQuery.search("tag:wotd Text:*{{c1::#{definition.word}}}*").empty?
+        query = "tag:wotd Text:*{{c1::#{word}}}*"
+        !Anki::Connect::CardQuery.search(query).empty?
       end
 
-      def to_text
+      def print
         puts "#" * 10
-        print definition.card
-        puts "\n" * 2
-        print definition.note
+        Kernel.print definition.card
+        puts "\n"
+        Kernel.print definition.note
         puts
         puts "#" * 10
       end

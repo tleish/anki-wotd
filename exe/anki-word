@@ -26,10 +26,8 @@ end
 definitions = Anki::Wotd::Words.new(words: options[:words])
 cards = Anki::Wotd::Cards.new(definitions: definitions)
 
-if !options[:print]
-  Anki::Wotd::Ankify.new(cards: cards).add
+if options[:print]
+  cards.each(&:print)
 else
-  cards.each do |card|
-    puts card.to_text
-  end
+  Anki::Wotd::Ankify.new(cards: cards).create
 end
