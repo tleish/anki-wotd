@@ -22,7 +22,6 @@ module Anki
     end
 
     class CardCreatorFactory
-      SEARCH_TEMPLATE = 'tag:wotd Text:*{{c1::%s}}*'.freeze
       def self.for(card)
         if card.ankified?
           NullCardCreator.new(card: card)
@@ -53,7 +52,7 @@ module Anki
       end
     end
 
-    class NullCardCreator < CardCreator
+    class NullCardCreator < BaseCardCreator
       STATUS = 'skipped'.freeze
     end
   end
