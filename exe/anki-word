@@ -23,6 +23,9 @@ Anki::Connect.configure do |config|
   config.oxford_dictionary_client = OxfordDictionary.new(app_id: ANKI_CONFIG['OXFORD_DICTIONARY_APP_ID'], app_key: ANKI_CONFIG['OXFORD_DICTIONARY_APP_KEY'])
 end
 
+# Test connection to Anki and fail quickly if not open
+Anki::Connect::Deck::Info.new.id
+
 definitions = Anki::Wotd::Words.new(words: options[:words])
 cards = Anki::Wotd::Cards.new(definitions: definitions)
 
